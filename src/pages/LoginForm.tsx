@@ -69,10 +69,23 @@ const LoginForm = () => {
             </label>
             <input
               type="text"
-              placeholder="Ex: 2 04 10 99 322 119"
+              placeholder="Ex: 1 85 05 75 125 123"
               value={ssn}
-              onChange={(e) => setSsn(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value.replace(/\D/g, ''); // Garde seulement les chiffres
+                if (val.length <= 13) {
+                  // Formatage simple : X XX XX XX XXX XXX
+                  let formatted = val;
+                  if (val.length > 1) formatted = val.slice(0, 1) + ' ' + val.slice(1);
+                  if (val.length > 3) formatted = formatted.slice(0, 4) + ' ' + val.slice(3);
+                  if (val.length > 5) formatted = formatted.slice(0, 7) + ' ' + val.slice(5);
+                  if (val.length > 7) formatted = formatted.slice(0, 10) + ' ' + val.slice(7);
+                  if (val.length > 10) formatted = formatted.slice(0, 14) + ' ' + val.slice(10);
+                  setSsn(formatted.trim());
+                }
+              }}
               required
+              minLength={15} // 13 chiffres + les espaces de formatage
               style={{
                 padding: '0.85rem',
                 borderRadius: '4px',

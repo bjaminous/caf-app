@@ -10,8 +10,19 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const [ssnError, setSsnError] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation du nombre de chiffres (doit être exactement 13)
+    const rawSsn = ssn.replace(/\s/g, '');
+    if (rawSsn.length !== 13) {
+      setSsnError(true);
+      return;
+    }
+    
+    setSsnError(false);
     setIsLoading(true);
 
     // --- CONFIGURATION ---
@@ -69,7 +80,7 @@ const LoginForm = () => {
             </label>
             <input
               type="text"
-              placeholder="Ex: 1 85 05 75 125 123"
+              placeholder="13 caractères"
               value={ssn}
               onChange={(e) => {
                 const val = e.target.value.replace(/\D/g, ''); // Garde seulement les chiffres
@@ -82,19 +93,26 @@ const LoginForm = () => {
                   if (val.length > 7) formatted = formatted.slice(0, 10) + ' ' + val.slice(7);
                   if (val.length > 10) formatted = formatted.slice(0, 14) + ' ' + val.slice(10);
                   setSsn(formatted.trim());
+                  if (val.length === 13) setSsnError(false);
                 }
               }}
               required
-              minLength={15} // 13 chiffres + les espaces de formatage
               style={{
                 padding: '0.85rem',
                 borderRadius: '4px',
-                border: '1px solid #ccc',
+                border: ssnError ? '2px solid #d31d44' : '1px solid #ccc',
                 backgroundColor: '#f8fafc',
                 fontSize: '1.1rem',
-                letterSpacing: '0.05em'
+                letterSpacing: '0.05em',
+                outline: 'none'
               }}
             />
+            {ssnError && (
+              <p style={{ color: '#d31d44', fontSize: '0.9rem', marginTop: '-4px', lineHeight: '1.4' }}>
+                Saisie incorrecte (13 caractères ;<br />
+                Exemple : 2 94 03 75 120 005)
+              </p>
+            )}
             <div className="flex items-center gap-2 mt-1">
               <input type="checkbox" id="remember" style={{ width: '18px', height: '18px' }} />
               <label htmlFor="remember" style={{ fontSize: '0.875rem', color: '#666' }}>Retenir cet identifiant</label>

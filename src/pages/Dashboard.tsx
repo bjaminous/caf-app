@@ -87,7 +87,7 @@ const Dashboard = () => {
                 >
                   <div style={{ fontSize: '1rem', fontWeight: 500, marginBottom: '2px' }}>Mon dernier paiement</div>
                   <div style={{ fontSize: '0.75rem', marginBottom: '0.4rem', opacity: 0.9 }}>le 26/02/2026</div>
-                  <div style={{ fontSize: '3.4rem', fontWeight: 700, lineHeight: 1, margin: '0.4rem 0' }}>1040 €</div>
+                  <div style={{ fontSize: '3.4rem', fontWeight: 700, lineHeight: 1, margin: '0.4rem 0' }}>0 €</div>
                   <a href="#" style={{ color: 'white', fontSize: '0.9rem', fontWeight: 500, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.8)', marginTop: '0.5rem', display: 'flex', alignItems: 'center' }}>
                     Voir le détail <span style={{ marginLeft: '4px' }}>&gt;</span>
                   </a>
